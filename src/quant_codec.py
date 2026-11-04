@@ -4,10 +4,13 @@ Supports:
   - BF16: Identity
   - INT8 (group_size 128, symmetric)
   - INT4 (group_size 128, symmetric, 2 values packed per byte)
+    - legacy_numpy: Original CPU NumPy reference unpack
+    - torch_cuda: High-performance pure GPU tensor unpack (P5a.2)
 """
 
 import numpy as np
 import torch
+from typing import Tuple
 
 def quantize_int8_g128(weight: torch.Tensor, group_size: int = 128):
     """
@@ -97,9 +100,9 @@ def quantize_int4_g128(weight: torch.Tensor, group_size: int = 128):
     scales = scales.reshape(*orig_shape[:-1], K // group_size).to(orig_dtype)
     return packed_bytes, scales, orig_shape
 
-def dequantize_int4_g128(packed_bytes: torch.Tensor, scales: torch.Tensor, shape: tuple, group_size: int = 128, target_dtype=torch.bfloat16):
+def dequantize_int4_g128_legacy_numpy(packed_bytes: torch.Tensor, scales: torch.Tensor, shape: tuple, group_size: int = 128, target_dtype=torch.bfloat16):
     """
-    Dequantize packed INT4 bytes to target float dtype.
+    Legacy CPU NumPy unpack reference implementation.
     """
     packed_np = packed_bytes.cpu().numpy()
     unpacked_np = unpack_int4(packed_np)
@@ -110,3 +113,52 @@ def dequantize_int4_g128(packed_bytes: torch.Tensor, scales: torch.Tensor, shape
     flat_s = scales.reshape(-1, 1).float()
     dequant = (flat_w * flat_s).to(target_dtype)
     return dequant.reshape(shape)
+
+def dequantize_int4_g128_torch_cuda(packed_bytes: torch.Tensor, scales: torch.Tensor, shape: tuple, group_size: int = 128, target_dtype=torch.bfloat16):
+    """
+    P5a.2 Pure PyTorch CUDA GPU Unpack & Dequantization.
+    Zero CPU copies, zero NumPy conversion, fully vectorized on GPU.
+    """
+    device = packed_bytes.device
+    flat_packed = packed_bytes.view(-1)
+
+    # 1. Extract low and high nibbles
+    low = (flat_packed & 0x0F).to(torch.int16)
+    high = ((flat_packed >> 4) & 0x0F).to(torch.int16)
+
+    # 2. Two's complement sign extension (8..15 -> -8..-1)
+    low = torch.where(low >= 8, low - 16, low)
+    high = torch.where(high >= 8, high - 16, high)
+
+    # 3. Interleave: low nibble is even index, high nibble is odd index
+    unpacked = torch.stack([low, high], dim=1).view(-1)
+
+    # Truncate if padding exists
+    total_elements = 1
+    for s in shape:
+        total_elements *= s
+    if unpacked.numel() > total_elements:
+        unpacked = unpacked[:total_elements]
+
+    # 4. Dequantize by group scales
+    flat_w = unpacked.reshape(-1, group_size).to(torch.float32)
+    flat_s = scales.reshape(-1, 1).to(torch.float32)
+    dequant = (flat_w * flat_s).to(target_dtype)
+    return dequant.reshape(shape)
+
+def dequantize_int4_g128(
+    packed_bytes: torch.Tensor,
+    scales: torch.Tensor,
+    shape: tuple,
+    group_size: int = 128,
+    target_dtype=torch.bfloat16,
+    backend: str = "torch_cuda"
+):
+    """
+    Unified entry point for INT4 dequantization.
+    backend: "torch_cuda" (fast GPU path) or "legacy_numpy" (CPU reference path)
+    """
+    if backend == "torch_cuda" and packed_bytes.is_cuda:
+        return dequantize_int4_g128_torch_cuda(packed_bytes, scales, shape, group_size, target_dtype)
+    else:
+        return dequantize_int4_g128_legacy_numpy(packed_bytes, scales, shape, group_size, target_dtype)
