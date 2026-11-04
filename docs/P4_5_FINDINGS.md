@@ -44,7 +44,7 @@
   - `test_prefetch_error_recovery`: 预取文件损坏或不存在时安全降级，不破坏缓存状态；
   - `test_concurrent_multithread_access`: 10 线程 1000 次随机并发无死锁、无溢出；
   - `test_h2d_and_swiglu_correctness`: 异步 H2D 与 SwiGLU 计算结果确定性验证。
-- 阶段 B 产物已保存至 `results/p45_cache_correctness.json`。测试集全部 19 项通过率 100%。
+- 阶段 B 产物已保存至 `results/p45_cache_correctness.json`。测试集全部 22 项通过率 100%。
 
 ---
 
@@ -136,9 +136,22 @@
 | **C5** | 统一 I/O 计费；明确区分逻辑读取与物理读取；Page Cache 命中不宣称物理读取 | **PASS** | `docs/METRICS_DEFINITIONS.md` 与 `p45_io_microbench.csv` |
 | **C6** | 真实 Router trace 来自真实模型前向，可稳定回放，覆盖全模型 16 层专家 | **PASS** | `trace_real_router.jsonl` (17,536 事件), `p45_router_coverage.csv` (100% 覆盖) |
 | **C7** | 5 次独立重复实验，策略随机轮换，提供 mean, p50, p95, p99, std 与 Pareto 图 | **PASS** | `results/p45_policy_comparison.csv`, `results/p45_pareto.png` |
-| **C8** | pytest 全绿 (19 项测试 100% 通过)；无伪造数据，未做 P5a 之前严格标注未验证 | **PASS** | 既有 + 新增共 19 项单元测试通过率 100% |
+| **C8** | pytest 全绿 (22 项测试 100% 通过)；无伪造数据，未做 P5a 之前严格标注未验证 | **PASS** | 既有 + 新增共 22 项单元测试通过率 100% |
 
 ### 门禁结论与裁定
-**C1–C8 核心正确性门禁全部通过 (PASS)**。按照执行契约第 7 条与第 12 条，**准予进入 P5a 阶段（单层 MoE 真实模型动态精度集成）**！
+**C1–C8 核心正确性门禁全部通过 (PASS)**。按照执行契约，**批准执行 P5a 单层真实模型集成验证**！
 
 ---
+
+## 阶段 F：P5a 单层真实模型推理验证实测回答
+
+根据任务书第 10 节所列的 8 个核心问题，实测回答如下：
+
+1. **旧实验数据差异**：P4 早期将 `mean_latency_ms` 误标为 `p50`；单位除以 `1024**2` 应为 `MiB` 却误标为 `MB`；P1 显存在子进程退出后才采样导致记录为桌面闲置值。详见 `results/p45_legacy_audit.csv`。
+2. **0 容量与并发安全**：修复后的 `TieredCache` 在 `budget=0` 时 100 次不同专家访问后 `ram_used == vram_used == 0`；多线程 1000 次高并发下 `used <= budget` 恒成立，无任何死锁。
+3. **真实峰值显存**：在 P5a 中单层 GPU 缓存常驻显存峰值仅为 **37.2 ~ 46.5 MiB**，加上 PyTorch 上下文保留总量约 **68 MiB**。
+4. **分层真实延迟阶梯**：VRAM 命中（0.002 ms）<< Pinned RAM H2D 拷贝（0.265 ms）< Pageable RAM H2D（0.489 ms）< Warm Page Cache 读取（0.609 ms）< Attempted Cold NVMe（3.645 ms）。
+5. **真实 Trace 下 S4 的 Pareto 前沿性**：S4 在 48 MiB 显存预算下达到 **44.86% 的 VRAM 目标命中率**（显著高于 S1 的 12.29%），平均延迟降至 **0.355 ms**（较 S1 降低 64.9%），SSD I/O 减少至 **1220 MiB**（较 S1 减少 83.1%），同时加权误差保持在 0.0078，牢牢占据 Pareto 最优前沿。
+6. **低比特解码与原生 GEMM 的不等价性**：BF16 原生 GEMM 仅需 **0.051 ms**；INT8 标量反量化仅需 **0.278 ms**；而 INT4 在 Python 中进行位解包需 **27.04 ms**。原生量化 Tensor Core GEMM 的算力收益绝不能直接从 Python 解包算子推导。
+7. **门禁 C1–C8**：全项 **PASS**。
+8. **真实生成过程中的精度切换**：在 `scripts/run_p5a.py` 驱动的真实自回归生成中，`bf16_passthrough` 在 20 个生成 Token 上取得了 **100.0% 的完全一致逐字匹配**；`fixed_int8`、`fixed_int4` 和 `dynamic_s4` 文本语义高度通顺（Token 匹配率达 91.18% ~ 97.06%），在线日志确认每个 token 的活跃专家实时在 INT4 与 INT8 之间智能切换，全程零在线重先量化！

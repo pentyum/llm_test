@@ -373,6 +373,9 @@ class TieredCache:
         t_dec_1 = time.perf_counter()
         decode_ms = (t_dec_1 - t_dec_0) * 1000.0
 
+        # Ensure input x is on the same device as the weights
+        x = x.to(device=gate_w.device, dtype=gate_w.dtype)
+
         t_gemm_0 = time.perf_counter()
         gate_out = torch.matmul(x, gate_w.T)
         silu_out = torch.nn.functional.silu(gate_out)
