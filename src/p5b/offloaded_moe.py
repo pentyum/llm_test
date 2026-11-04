@@ -1,15 +1,15 @@
 """
-P5b Gate G1: Multi-Layer Offloaded MoE Manager
-Manages simultaneous replacement of multiple MoE layers:
-  - L1: [0]
-  - L2: [0, 4]
-  - L4: [0, 4, 8, 12]
-Ensures distinct (layer_id, expert_id) keying, strict gate weight identity,
-and support for restore / mode switching across all offloaded layers.
+P5b Gate G1 & G4: Multi-Layer Offloaded MoE Manager with True Expert Memory Unloading
+Features:
+  - Simultaneous replacement of multiple MoE layers: L1 [0], L2 [0,4], L4 [0,4,8,12]
+  - True expert parameter unloading: When release_orig_experts=True, deletes original
+    BF16 experts from memory (del orig_mlp.experts) to prevent dual-copy residency in RAM.
+  - Guarantees target layers rely strictly on TieredCache / SSD store.
 """
 
 import os
 import sys
+import gc
 import torch
 import torch.nn as nn
 from typing import List, Dict, Optional, Any
@@ -28,7 +28,8 @@ class MultiLayerOffloadedMoE:
         cache: TieredCache,
         mode: str = "bf16_passthrough",
         policy = None,
-        dequant_backend: str = "torch_cuda"
+        dequant_backend: str = "torch_cuda",
+        release_orig_experts: bool = False
     ):
         self.model = model
         self.target_layers = sorted(list(target_layers))
@@ -36,6 +37,7 @@ class MultiLayerOffloadedMoE:
         self.mode = mode
         self.policy = policy
         self.dequant_backend = dequant_backend
+        self.release_orig_experts = release_orig_experts
 
         self.orig_mlps: Dict[int, nn.Module] = {}
         self.dyn_layers: Dict[int, DynamicMoELayer] = {}
@@ -62,6 +64,14 @@ class MultiLayerOffloadedMoE:
             )
             self.dyn_layers[l] = dyn
             self.model.model.layers[l].mlp = dyn
+
+            if self.release_orig_experts:
+                # G4.1: Delete original BF16 experts to prevent RAM dual-copy retention
+                if hasattr(orig_mlp, "experts"):
+                    orig_mlp.experts = None
+
+        if self.release_orig_experts:
+            gc.collect()
 
         self.is_attached = True
 
