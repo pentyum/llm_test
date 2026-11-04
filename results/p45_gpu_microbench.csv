@@ -1,0 +1,4 @@
+precision,mean_decode_ms,p50_decode_ms,p95_decode_ms,mean_gemm_ms,p50_gemm_ms,p95_gemm_ms,mean_total_compute_ms,peak_allocated_mib,peak_reserved_mib
+int4_g128,27.0429,26.8098,27.2289,1.8272,0.0502,0.0548,28.8701,37.22,68.0
+int8_g128,0.2784,0.2765,0.283,0.0509,0.0502,0.0522,0.3293,46.5,68.0
+bf16,0.0,0.0,0.0,0.0517,0.051,0.0528,0.0517,46.5,68.0

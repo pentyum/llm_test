@@ -1,0 +1,13 @@
+precision,tier_mode,file_size_mib,mean_ms,p50_ms,p95_ms,bandwidth_gbps,samples
+int4_g128,warm_page_cache,3.096,0.6089,0.5049,1.1357,4.96,15
+int4_g128,attempted_cold_ssd,3.096,3.6445,1.3847,11.5708,0.83,15
+int4_g128,h2d_copy_pageable,3.096,0.4888,0.4525,0.6755,6.19,15
+int4_g128,h2d_copy_pinned,3.096,0.2646,0.2638,0.268,11.43,15
+int8_g128,warm_page_cache,6.096,0.925,0.6075,2.042,6.44,15
+int8_g128,attempted_cold_ssd,6.096,2.8344,2.418,4.6137,2.1,15
+int8_g128,h2d_copy_pageable,6.096,0.7153,0.6909,0.8329,8.32,15
+int8_g128,h2d_copy_pinned,6.096,0.5002,0.4997,0.5034,11.9,15
+bf16,warm_page_cache,12.001,2.5019,2.6173,4.1056,4.68,15
+bf16,attempted_cold_ssd,12.001,4.2031,3.987,4.9969,2.79,15
+bf16,h2d_copy_pageable,12.001,1.1511,1.1246,1.2522,10.18,15
+bf16,h2d_copy_pinned,12.001,0.9597,0.9589,0.9641,12.21,15
