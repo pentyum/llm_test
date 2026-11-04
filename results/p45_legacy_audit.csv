@@ -1,0 +1,9 @@
+metric,report_value,csv_value,unit,match,reason
+P4 S4 latency in REPORT.md,p50=0.094 ms,mean_latency_ms=0.094 ms (df_p4 S4 48MB),ms,Discrepancy (Metric Definition),"REPORT.md placed 0.094 ms under the 'p50' table column, but in p4_policy_comparison.csv it is mean_latency_ms, not p50."
+P4 S0 latency in REPORT.md,p50=0.016 ms,mean_latency_ms=0.016 ms (df_p4 S0 48MB),ms,Discrepancy (Metric Definition),REPORT.md labeled mean_latency_ms as p50 in the summary table.
+P4 Storage Traffic Unit,MB,bytes / (1024*1024) = MiB,MiB vs MB,Discrepancy (Unit),"Code divided bytes by 1024**2, which is binary MiB, but headers and report labeled it as decimal MB."
+P1 Throughput (Group A),257.20 t/s,257.20 t/s,tokens/s,Match,Mean warmup eval_tps across 3 prompts in p1_baseline.csv is exactly 257.20 t/s.
+P1 Throughput (Group B cache=0),75.27 t/s,75.27 t/s,tokens/s,Match,Mean warmup eval_tps across 3 prompts in p1_baseline.csv is exactly 75.27 t/s.
+P2 M1 Target Hit Rate,72.0%,0.72 (72.0%),%,Match,target_precision_hit_rate in p2_ablation.csv for M1 mixed_precision is 0.72.
+P4 S4 Weighted Error,0.0656,0.0656,relative error,Match,avg_weighted_error in p4_policy_comparison.csv is 0.0656.
+P1 VRAM Used (nvidia-smi),880 MiB,880.0 MiB,MiB,Discrepancy (Runtime vs Post-run),"In run_p1_experiments.py, vram_used_mib was queried AFTER the llama-cli process terminated, capturing idle VRAM instead of peak inference VRAM."
