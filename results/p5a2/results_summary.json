@@ -1,0 +1,48 @@
+{
+  "benchmark": "P5a.2 Large-Scale Evaluation",
+  "num_prompts": 8,
+  "repeats": 3,
+  "total_generations": 120,
+  "modes": {
+    "ref_unmodified": {
+      "mean_tpot_ms": 69.93,
+      "p50_tpot_ms": 69.58,
+      "mean_decode_tps": 14.3,
+      "mean_token_match_pct": 100.0,
+      "mean_ttft_ms": 244.58,
+      "total_decode_switches": 0
+    },
+    "bf16_passthrough": {
+      "mean_tpot_ms": 89.06,
+      "p50_tpot_ms": 88.63,
+      "mean_decode_tps": 11.23,
+      "mean_token_match_pct": 85.94,
+      "mean_ttft_ms": 465.03,
+      "total_decode_switches": 0
+    },
+    "fixed_int8": {
+      "mean_tpot_ms": 80.03,
+      "p50_tpot_ms": 79.96,
+      "mean_decode_tps": 12.5,
+      "mean_token_match_pct": 90.62,
+      "mean_ttft_ms": 366.59,
+      "total_decode_switches": 0
+    },
+    "fixed_int4": {
+      "mean_tpot_ms": 77.3,
+      "p50_tpot_ms": 77.24,
+      "mean_decode_tps": 12.94,
+      "mean_token_match_pct": 86.72,
+      "mean_ttft_ms": 342.68,
+      "total_decode_switches": 0
+    },
+    "s4_measured_cost": {
+      "mean_tpot_ms": 77.88,
+      "p50_tpot_ms": 77.73,
+      "mean_decode_tps": 12.85,
+      "mean_token_match_pct": 93.75,
+      "mean_ttft_ms": 357.12,
+      "total_decode_switches": 24
+    }
+  }
+}

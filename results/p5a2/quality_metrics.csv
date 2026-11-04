@@ -1,0 +1,8 @@
+,token_match_pct,token_match_pct,ttft_ms,ttft_ms,tpot_mean_ms,tpot_mean_ms,decode_tokens_per_sec,decode_tokens_per_sec,switches
+,mean,std,mean,std,mean,std,mean,std,sum
+mode,,,,,,,,,
+bf16_passthrough,85.94,25.08,465.03,73.67,89.06,1.9,11.23,0.24,0
+fixed_int4,86.72,18.73,342.68,44.34,77.3,1.33,12.94,0.22,0
+fixed_int8,90.62,16.89,366.59,51.37,80.03,1.4,12.5,0.22,0
+ref_unmodified,100.0,0.0,244.58,23.21,69.93,1.07,14.3,0.21,0
+s4_measured_cost,93.75,11.51,357.12,60.01,77.88,1.85,12.85,0.3,24

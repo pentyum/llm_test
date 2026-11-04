@@ -1,0 +1,32 @@
+{"id": "moe_01", "category": "architecture", "prompt": "Explain how mixture-of-experts language models route tokens."}
+{"id": "moe_02", "category": "architecture", "prompt": "What is the role of the gating network in Sparse MoE?"}
+{"id": "moe_03", "category": "architecture", "prompt": "Why does OLMoE use 64 experts with top-8 routing?"}
+{"id": "moe_04", "category": "architecture", "prompt": "Describe the difference between dense transformers and sparse MoE models."}
+{"id": "moe_05", "category": "architecture", "prompt": "How does load balancing loss prevent expert collapse?"}
+{"id": "moe_06", "category": "architecture", "prompt": "Discuss the advantages of SwiGLU activation in feed-forward layers."}
+{"id": "moe_07", "category": "architecture", "prompt": "How does token routing normalization impact generation stability?"}
+{"id": "moe_08", "category": "architecture", "prompt": "Explain the concept of capacity factor in MoE systems."}
+{"id": "sys_01", "category": "systems", "prompt": "Discuss the trade-offs between static integer quantization and dynamic precision caching."}
+{"id": "sys_02", "category": "systems", "prompt": "How does NVMe SSD bandwidth compare to PCIe Gen4 Host-to-Device transfer rate?"}
+{"id": "sys_03", "category": "systems", "prompt": "What causes cache thrashing in expert offloading systems?"}
+{"id": "sys_04", "category": "systems", "prompt": "Explain how LRU eviction behaves under Zipfian access distributions."}
+{"id": "sys_05", "category": "systems", "prompt": "Why is asynchronous prefetching crucial for hiding memory load latency?"}
+{"id": "sys_06", "category": "systems", "prompt": "Describe the memory hierarchy of modern GPUs from registers to HBM."}
+{"id": "sys_07", "category": "systems", "prompt": "What are the bottlenecks of running 7B models on 8GB consumer GPUs?"}
+{"id": "sys_08", "category": "systems", "prompt": "How does KV cache size scale with context length and batch size?"}
+{"id": "code_01", "category": "code", "prompt": "Write a high-performance Python class implementing an LRU cache."}
+{"id": "code_02", "category": "code", "prompt": "Implement binary search in Python with edge case handling."}
+{"id": "code_03", "category": "code", "prompt": "Write a CUDA kernel or PyTorch function to unpack 4-bit integers."}
+{"id": "code_04", "category": "code", "prompt": "How do you calculate matrix multiplication using PyTorch tensors?"}
+{"id": "code_05", "category": "code", "prompt": "Implement a thread-safe producer-consumer queue in Python."}
+{"id": "code_06", "category": "code", "prompt": "Write a Python decorator that measures function execution wall time."}
+{"id": "code_07", "category": "code", "prompt": "How does NumPy packbits and unpackbits work on byte arrays?"}
+{"id": "code_08", "category": "code", "prompt": "Implement a simple priority queue using Python heapq module."}
+{"id": "reason_01", "category": "reasoning", "prompt": "Solve step by step: If a car travels 60 miles in 45 minutes, what is its speed in mph?"}
+{"id": "reason_02", "category": "reasoning", "prompt": "Explain why the sky appears blue during the day and red at sunset."}
+{"id": "reason_03", "category": "reasoning", "prompt": "Compare the principles of supervised learning and reinforcement learning."}
+{"id": "reason_04", "category": "reasoning", "prompt": "What are the key differences between TCP and UDP networking protocols?"}
+{"id": "reason_05", "category": "reasoning", "prompt": "Describe how photosynthesis converts light energy into chemical energy."}
+{"id": "reason_06", "category": "reasoning", "prompt": "Explain the concept of entropy in information theory and thermodynamics."}
+{"id": "reason_07", "category": "reasoning", "prompt": "Why do neural networks require non-linear activation functions?"}
+{"id": "reason_08", "category": "reasoning", "prompt": "Summarize the significance of the Turing Test in artificial intelligence."}
