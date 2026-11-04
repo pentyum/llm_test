@@ -13,8 +13,9 @@ def test_cache_keys_distinct_by_precision():
 
     assert meta_i4["precision"] == "int4_g128"
     assert meta_i8["precision"] == "int8_g128"
-    assert (0, 0, "int4_g128") in cache.vram_cache
-    assert (0, 0, "int8_g128") in cache.vram_cache
+    # Key in vram_cache has (layer, expert, precision, format_version)
+    assert any(k[0] == 0 and k[1] == 0 and k[2] == "int4_g128" for k in cache.vram_cache)
+    assert any(k[0] == 0 and k[1] == 0 and k[2] == "int8_g128" for k in cache.vram_cache)
     assert len(cache.vram_cache) >= 2
 
 def test_cache_budgets_and_eviction():

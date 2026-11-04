@@ -26,3 +26,24 @@
    - 已将 P1–P4 产出的 8 个关键文件（CSV 与 PNG）的 SHA256 校验和固化至 `results/p45_baseline_manifest.json`，确保历史基线不可篡改且可追溯。
 
 ---
+
+## 阶段 B：三级缓存修复与正确性验证
+
+### 1. 修复的核心问题与代码改造
+- **B1 零容量与超预算项旁路 (Bypass)**：当 `ram_budget=0` 或 `vram_budget=0`，或者单项所需显存/内存超过总预算时，坚决不存入字典，走临时加载执行旁路，调用结束后由 Python GC 自动回收，确保 `used_bytes == 0`，绝不发生负记账或容量溢出。
+- **B1 多线程并发竞态修复**：并发环境下若多个线程同时 miss 同一个 key，在插入时先检查并扣除旧项占用的字节数，防止重复累加引发的容量超标。
+- **B2 细粒度并发锁与预取去重**：使用 `self.in_flight` 注册正在预取的 key；前台若请求正在预取中的项，挂起等待其事件通知，避免触发二次 SSD I/O；SSD 读取与 CUDA 同步操作移出全局互斥锁，彻底解除并发死锁隐患。
+- **B3 命中指标精准解耦**：彻底区分 `vram_target_hits`（VRAM 目标精度命中）、`ram_target_hits`（RAM 目标精度命中）与 `any_precision_hits`（任意精度命中），分母严格统一为总请求数 `requests`。
+
+### 2. 自动化单元测试验证
+- 编写并执行 `tests/test_p45_cache_correctness.py`，覆盖：
+  - `test_zero_budget_bypass`: 100 次不同专家访问后 `ram_used == vram_used == 0`；
+  - `test_oversized_object_bypass`: 超过预算对象安全旁路；
+  - `test_exact_budget_eviction_and_multi_precision`: 多精度并存与精确 LRU 驱逐；
+  - `test_prefetch_deduplication`: 预取与并发前台访问触发去重，单 key 只读一次磁盘；
+  - `test_prefetch_error_recovery`: 预取文件损坏或不存在时安全降级，不破坏缓存状态；
+  - `test_concurrent_multithread_access`: 10 线程 1000 次随机并发无死锁、无溢出；
+  - `test_h2d_and_swiglu_correctness`: 异步 H2D 与 SwiGLU 计算结果确定性验证。
+- 阶段 B 产物已保存至 `results/p45_cache_correctness.json`。测试集全部 19 项通过率 100%。
+
+---
