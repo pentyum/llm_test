@@ -1,0 +1,28 @@
+NAME        MODEL                           SIZE ROTA TYPE MOUNTPOINT
+loop0                                         4K    0 loop /snap/bare/5
+loop2                                        74M    0 loop /snap/core22/2955
+loop3                                      66.8M    0 loop /snap/core24/1643
+loop4                                      66.8M    0 loop /snap/core24/2124
+loop5                                     531.4M    0 loop /snap/gnome-42-2204/247
+loop6                                     531.5M    0 loop /snap/gnome-42-2204/263
+loop7                                     615.3M    0 loop /snap/gnome-46-2404/168
+loop8                                       616M    0 loop /snap/gnome-46-2404/177
+loop9                                      91.7M    0 loop /snap/gtk-common-themes/1535
+loop10                                      395M    0 loop /snap/mesa-2404/1165
+loop11                                      402M    0 loop /snap/mesa-2404/1839
+loop12                                    207.2M    0 loop /snap/moonlight/2888
+loop13                                     50.3M    0 loop /snap/snapd/27738
+loop14                                     44.7M    0 loop /snap/snapd/28254
+loop15                                    222.3M    0 loop /snap/thunderbird/1282
+loop16                                    222.9M    0 loop /snap/thunderbird/1294
+loop17                                       74M    0 loop /snap/core22/2987
+sda         WDC WD40EMAZ-11LW3B0            3.6T    1 disk 
+└─sda1                                      3.6T    1 part /mnt/data
+nvme1n1     WD PC SN560 SDDPNQE-1T00-1102 953.9G    0 disk 
+├─nvme1n1p1                                 385M    0 part /boot/efi
+├─nvme1n1p2                                  32G    0 part [SWAP]
+├─nvme1n1p3                               921.2G    0 part /
+└─nvme1n1p7                                 260M    0 part 
+nvme0n1     ZHITAI TiPlus7100 4TB           3.7T    0 disk 
+├─nvme0n1p1                                  32G    0 part [SWAP]
+└─nvme0n1p3                                 3.7T    0 part /home

@@ -1,0 +1,22 @@
+{
+  "git_sha": "862d5f748b7ac43049443d5de41baa8c74701efc",
+  "python_version": "3.11.18",
+  "torch_version": "2.6.0+cu124",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "vram_total_mib": 7782.62,
+  "signatures": {
+    "DynamicMoELayer": "(self, orig_moe_block: torch.nn.modules.module.Module, layer_id: int, cache: src.tiered_cache.TieredCache, mode: str = 'bf16_passthrough', policy=None, dequant_backend: str = 'torch_cuda', prefetch_manager=None)",
+    "MultiLayerOffloadedMoE": "(self, model: torch.nn.modules.module.Module, target_layers: List[int], cache: src.tiered_cache.TieredCache, mode: str = 'bf16_passthrough', policy=None, dequant_backend: str = 'torch_cuda', release_orig_experts: bool = False, prefetch_manager=None)",
+    "PrefetchManager": "(self, cache: src.tiered_cache.TieredCache, strategy: str = 'sync_no_prefetch', target_layers: Optional[List[int]] = None, hot_experts_per_layer: Optional[Dict[int, List[int]]] = None, oracle_trace: Optional[List[Dict[str, Any]]] = None)"
+  },
+  "verified_layers": [
+    0,
+    4,
+    8,
+    12
+  ],
+  "total_manifest_weights": 768,
+  "missing_weights_count": 0,
+  "status": "PASS"
+}

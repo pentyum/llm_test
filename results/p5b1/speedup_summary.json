@@ -1,0 +1,9 @@
+{
+  "benchmark": "P5b.1 Strict Fair Prefetch Ablation",
+  "int4_ttft_sync_ms": 707.62,
+  "int4_ttft_static_ms": 712.71,
+  "int4_ttft_saved_ms": -5.09,
+  "int4_ttft_speedup_ratio": 0.99,
+  "static_effective_hit_rate": 0.1667,
+  "status": "PASS"
+}

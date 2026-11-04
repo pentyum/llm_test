@@ -1,0 +1,6 @@
+precision,strategy,ttft_mean_ms,tpot_mean_ms,tpot_p50_ms,tpot_p95_ms,decode_tps,prefetch_issued,effective_hits,late_prefetches,wasted_prefetches,effective_hit_rate,wasted_bytes_mib
+fixed_int4,sync_no_prefetch,707.62,113.82,113.15,117.88,8.79,0,0,0,0,0.0,0.0
+fixed_int4,static_layer_prefetch,712.71,114.16,114.19,115.55,8.76,18,3,0,15,0.1667,45.94
+fixed_int4,oracle_prefetch,727.91,119.57,119.78,124.48,8.37,162,102,0,60,0.6296,183.75
+fixed_int8,sync_no_prefetch,802.52,130.29,129.99,132.26,7.68,0,0,0,0,0.0,0.0
+fixed_int8,static_layer_prefetch,799.04,128.99,128.88,129.74,7.75,18,0,0,18,0.0,55.12
