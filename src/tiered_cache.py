@@ -340,7 +340,8 @@ class TieredCache:
         self,
         x: torch.Tensor,
         gpu_data: Dict[str, Any],
-        meta: Dict[str, Any]
+        meta: Dict[str, Any],
+        dequant_backend: str = "torch_cuda"
     ) -> Tuple[torch.Tensor, float, float]:
         """
         Executes SwiGLU forward: E(x) = down( silu(gate(x)) * up(x) )
@@ -362,9 +363,9 @@ class TieredCache:
             up_w = dequantize_int8_g128(gpu_data["up_proj"], gpu_data["up_scales"], group_size)
             down_w = dequantize_int8_g128(gpu_data["down_proj"], gpu_data["down_scales"], group_size)
         elif precision.startswith("int4"):
-            gate_w = dequantize_int4_g128(gpu_data["gate_proj"], gpu_data["gate_scales"], gpu_data["gate_shape"], group_size)
-            up_w = dequantize_int4_g128(gpu_data["up_proj"], gpu_data["up_scales"], gpu_data["up_shape"], group_size)
-            down_w = dequantize_int4_g128(gpu_data["down_proj"], gpu_data["down_scales"], gpu_data["down_shape"], group_size)
+            gate_w = dequantize_int4_g128(gpu_data["gate_proj"], gpu_data["gate_scales"], gpu_data["gate_shape"], group_size, backend=dequant_backend)
+            up_w = dequantize_int4_g128(gpu_data["up_proj"], gpu_data["up_scales"], gpu_data["up_shape"], group_size, backend=dequant_backend)
+            down_w = dequantize_int4_g128(gpu_data["down_proj"], gpu_data["down_scales"], gpu_data["down_shape"], group_size, backend=dequant_backend)
         else:
             raise ValueError(f"Unsupported precision: {precision}")
 

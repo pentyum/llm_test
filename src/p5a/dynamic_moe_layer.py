@@ -32,13 +32,15 @@ class DynamicMoELayer(nn.Module):
         layer_id: int,
         cache: TieredCache,
         mode: str = "bf16_passthrough",
-        policy = None
+        policy = None,
+        dequant_backend: str = "torch_cuda"
     ):
         super().__init__()
         self.layer_id = layer_id
         self.cache = cache
         self.mode = mode
         self.policy = policy
+        self.dequant_backend = dequant_backend
 
         # Retain identical gate network
         self.gate = orig_moe_block.gate
@@ -107,8 +109,8 @@ class DynamicMoELayer(nn.Module):
                 # Load pre-quantized weights from TieredCache
                 gpu_data, meta, timings = self.cache.get_expert(self.layer_id, exp_id, target_prec)
 
-                # Execute SwiGLU forward
-                out_exp, dec_ms, gemm_ms = self.cache.forward_expert_swiglu(tok_x, gpu_data, meta)
+                # Execute SwiGLU forward with configured dequant_backend
+                out_exp, dec_ms, gemm_ms = self.cache.forward_expert_swiglu(tok_x, gpu_data, meta, dequant_backend=self.dequant_backend)
                 final_hidden_states[tok_idx] += score * out_exp.squeeze(0).to(hidden_states.device)
 
                 # Record strict PrecisionEvent
