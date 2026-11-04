@@ -1,0 +1,14 @@
+{
+  "git_sha": "d5feb574ec49d6acdd904de59a789c9504655854",
+  "branch": "main",
+  "python": "3.11.18 (main, Oct 26 2026, 18:19:35) [GCC 14.3.0]",
+  "torch": "2.6.0+cu124",
+  "transformers": "5.22.1",
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "total_vram_mib": 7782.62,
+    "driver_cuda": "12.4"
+  },
+  "cwd": "/home/yaoyao/llm_test",
+  "target_model": "allenai/OLMoE-1B-7B-0125-Instruct"
+}

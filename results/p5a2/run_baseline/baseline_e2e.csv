@@ -1,0 +1,16 @@
+mode,ttft_ms,tpot_mean_ms,tpot_p50_ms,tpot_p95_ms,decode_tps,token_match_pct,peak_vram_alloc_mib,peak_vram_res_mib,generated_text
+ref_unmodified,246.16,67.54,67.52,67.94,14.81,100.0,0.0,0.0,"
+
+Tokens are routed through the model based on their attention weights."
+bf16_passthrough,619.62,89.1,89.94,92.7,11.22,100.0,80.13,102.0,"
+
+Tokens are routed through the model based on their attention weights."
+fixed_int8,395.84,79.16,78.9,82.91,12.63,93.33,97.13,102.0,"
+
+Tokens are routed through the model based on their attention scores."
+fixed_int4,2473.71,233.06,232.17,238.42,4.29,100.0,100.07,166.0,"
+
+Tokens are routed through the model based on their attention weights."
+s4_budget,2444.49,232.1,235.08,239.74,4.31,100.0,100.07,166.0,"
+
+Tokens are routed through the model based on their attention weights."
