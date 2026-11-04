@@ -1,0 +1,19 @@
+mode,policy,ttft_ms,tpot_mean_ms,tpot_p50_ms,tpot_p95_ms,decode_tps,token_match_pct,decode_switches,pct_int4,pct_int8,pct_bf16,generated_text
+ref_unmodified,native_weights,255.05,68.01,68.03,69.08,14.7,100.0,0,0.0,0.0,100.0,"
+
+Tokens are routed through the model based on their attention weights. Each token has a set"
+T5_bf16_passthrough,bf16_passthrough,536.72,89.5,87.55,98.67,11.17,100.0,0,0.0,0.0,100.0,"
+
+Tokens are routed through the model based on their attention weights. Each token has a set"
+T5_fixed_int8,fixed_int8,395.56,79.56,78.69,83.03,12.57,95.0,0,0.0,100.0,0.0,"
+
+Tokens are routed through the model based on their attention scores. Each token has a set"
+T5_fixed_int4,fixed_int4,3728.05,307.93,305.48,318.13,3.25,100.0,0,100.0,0.0,0.0,"
+
+Tokens are routed through the model based on their attention weights. Each token has a set"
+T6_s4_legacy,S4LegacyPolicy,2954.11,302.81,301.52,319.0,3.3,100.0,0,100.0,0.0,0.0,"
+
+Tokens are routed through the model based on their attention weights. Each token has a set"
+T6_s4_budget,S4QualityBudgetPolicy,3176.39,299.85,306.27,315.92,3.33,100.0,1,96.97,3.03,0.0,"
+
+Tokens are routed through the model based on their attention weights. Each token has a set"

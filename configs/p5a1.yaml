@@ -1,0 +1,15 @@
+model_id: "allenai/OLMoE-1B-7B-0125-Instruct"
+target_layer: 0
+ram_budget_mib: 128
+vram_budget_mib: 64
+max_new_tokens: 20
+prompt: "Explain how mixture-of-experts language models route tokens."
+max_loss_budget: 0.025
+decode_mode: "incremental_kv"
+modes:
+  - "ref_unmodified"
+  - "bf16_passthrough"
+  - "fixed_int8"
+  - "fixed_int4"
+  - "s4_legacy"
+  - "s4_quality_budget"

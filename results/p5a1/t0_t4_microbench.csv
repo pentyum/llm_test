@@ -1,0 +1,8 @@
+test_id,policy,tier_hit,fetch_ms,dequant_ms,gemm_ms,notes
+T_int4_cold,fixed_int4,SSD,2.515322994440794,45.062869088724256,101.46790905855596,Cold start single expert access
+T_int4_warm,fixed_int4,VRAM,0.01253408845514059,33.11243909411132,0.08793489541858435,Warm hit in VRAM
+T_int8_cold,fixed_int8,SSD,2.2024359786882997,0.24891598150134087,0.07358798757195473,Cold start single expert access
+T_int8_warm,fixed_int8,VRAM,0.0050299568101763725,0.2123579615727067,0.048430985771119595,Warm hit in VRAM
+T2_forced_sequence,ForcedSequencePolicy,VRAM/RAM/SSD,,,,"Switch count=2, verified=True"
+T3_s4_legacy,S4LegacyPolicy,N/A (Decision only),,,,INT4 share=99.7% (confirms unconstrained load_cost bias)
+T4_s4_quality_budget,S4QualityBudgetPolicy,N/A (Decision only),,,,"INT4 share=99.2%, INT8 share=0.8% (proves dual-precision autonomous decision)"
