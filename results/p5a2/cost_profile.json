@@ -1,0 +1,76 @@
+{
+  "version": "p5a.2_measured",
+  "device": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "dequant_backend": "torch_cuda",
+  "metrics": {
+    "int4_g128": {
+      "dequant_ms": {
+        "mean": 0.5024,
+        "p50": 0.4926,
+        "p95": 0.6062
+      },
+      "gemm_ms": {
+        "mean": 0.0847,
+        "p50": 0.0847
+      },
+      "fetch_vram_ms": {
+        "mean": 0.0008,
+        "p50": 0.0007
+      },
+      "fetch_ram_ms": {
+        "mean": 0.4517,
+        "p50": 0.4479
+      },
+      "fetch_ssd_ms": {
+        "mean": 1.1615,
+        "p50": 0.9181
+      }
+    },
+    "int8_g128": {
+      "dequant_ms": {
+        "mean": 0.2078,
+        "p50": 0.2078,
+        "p95": 0.2089
+      },
+      "gemm_ms": {
+        "mean": 0.0467,
+        "p50": 0.0459
+      },
+      "fetch_vram_ms": {
+        "mean": 0.0008,
+        "p50": 0.0007
+      },
+      "fetch_ram_ms": {
+        "mean": 0.691,
+        "p50": 0.6875
+      },
+      "fetch_ssd_ms": {
+        "mean": 6.2811,
+        "p50": 2.7957
+      }
+    },
+    "bf16": {
+      "dequant_ms": {
+        "mean": 0.0027,
+        "p50": 0.0027,
+        "p95": 0.0028
+      },
+      "gemm_ms": {
+        "mean": 0.0674,
+        "p50": 0.0671
+      },
+      "fetch_vram_ms": {
+        "mean": 0.0008,
+        "p50": 0.0007
+      },
+      "fetch_ram_ms": {
+        "mean": 1.1216,
+        "p50": 1.1189
+      },
+      "fetch_ssd_ms": {
+        "mean": 5.3074,
+        "p50": 4.9913
+      }
+    }
+  }
+}
