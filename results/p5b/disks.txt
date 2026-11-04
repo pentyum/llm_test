@@ -1,0 +1,28 @@
+NAME          SIZE TYPE TRAN   MOUNTPOINTS
+loop0           4K loop        /snap/bare/5
+loop2          74M loop        /snap/core22/2955
+loop3        66.8M loop        /snap/core24/1643
+loop4        66.8M loop        /snap/core24/2124
+loop5       531.4M loop        /snap/gnome-42-2204/247
+loop6       531.5M loop        /snap/gnome-42-2204/263
+loop7       615.3M loop        /snap/gnome-46-2404/168
+loop8         616M loop        /snap/gnome-46-2404/177
+loop9        91.7M loop        /snap/gtk-common-themes/1535
+loop10        395M loop        /snap/mesa-2404/1165
+loop11        402M loop        /snap/mesa-2404/1839
+loop12      207.2M loop        /snap/moonlight/2888
+loop13       50.3M loop        /snap/snapd/27738
+loop14       44.7M loop        /snap/snapd/28254
+loop15      222.3M loop        /snap/thunderbird/1282
+loop16      222.9M loop        /snap/thunderbird/1294
+loop17         74M loop        /snap/core22/2987
+sda           3.6T disk usb    
+└─sda1        3.6T part        /mnt/data
+nvme1n1     953.9G disk nvme   
+├─nvme1n1p1   385M part nvme   /boot/efi
+├─nvme1n1p2    32G part nvme   [SWAP]
+├─nvme1n1p3 921.2G part nvme   /
+└─nvme1n1p7   260M part nvme   
+nvme0n1       3.7T disk nvme   
+├─nvme0n1p1    32G part nvme   [SWAP]
+└─nvme0n1p3   3.7T part nvme   /home

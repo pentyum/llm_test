@@ -1,0 +1,6 @@
+mode,ttft_mean_ms,tpot_p50_ms,tpot_p95_ms,tpot_p99_ms,decode_tps,token_match_mean_pct
+ref_unmodified,246.37,72.45,72.96,73.07,13.95,100.0
+L4_bf16_passthrough,910.56,156.61,162.42,163.37,6.37,82.03
+L4_fixed_int8,671.48,121.84,124.79,124.89,8.22,93.75
+L4_fixed_int4,662.88,107.2,109.6,110.22,9.33,87.5
+L4_s4_measured_cost,676.42,109.31,113.21,113.44,9.14,88.28

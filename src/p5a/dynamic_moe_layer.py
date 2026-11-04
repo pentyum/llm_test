@@ -33,7 +33,8 @@ class DynamicMoELayer(nn.Module):
         cache: TieredCache,
         mode: str = "bf16_passthrough",
         policy = None,
-        dequant_backend: str = "torch_cuda"
+        dequant_backend: str = "torch_cuda",
+        prefetch_manager = None
     ):
         super().__init__()
         self.layer_id = layer_id
@@ -41,6 +42,7 @@ class DynamicMoELayer(nn.Module):
         self.mode = mode
         self.policy = policy
         self.dequant_backend = dequant_backend
+        self.prefetch_manager = prefetch_manager
 
         # Retain identical gate network
         self.gate = orig_moe_block.gate
@@ -84,6 +86,8 @@ class DynamicMoELayer(nn.Module):
             routing_weights, selected_experts = torch.topk(probs, self.top_k, dim=-1)
 
         routing_weights = routing_weights.to(hidden_states.dtype)
+        if self.prefetch_manager is not None:
+            self.prefetch_manager.on_layer_enter(self.layer_id, self.current_decode_step or 0)
         final_hidden_states = torch.zeros_like(flat_hidden_states)
 
         # 2. Token-level Expert Execution Loop
@@ -106,6 +110,8 @@ class DynamicMoELayer(nn.Module):
                 else:
                     target_prec = "int4_g128"
 
+                if self.prefetch_manager is not None:
+                    self.prefetch_manager.on_expert_access(self.layer_id, exp_id, target_prec)
                 # Load pre-quantized weights from TieredCache
                 gpu_data, meta, timings = self.cache.get_expert(self.layer_id, exp_id, target_prec)
 

@@ -1,0 +1,12 @@
+{
+  "git_sha": "48a21634e61c84f030b42fc60704766a48ecf434",
+  "branch": "main",
+  "target_model": "allenai/OLMoE-1B-7B-0125-Instruct",
+  "python": "3.11.18 (main, Oct 26 2026, 18:19:35) [GCC 14.3.0]",
+  "torch": "2.6.0+cu124",
+  "transformers": "5.22.1",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "vram_total_mib": 7782.62,
+  "cuda_driver_version": "12.4"
+}

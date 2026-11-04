@@ -1,0 +1,4 @@
+strategy,ttft_ms,tpot_mean_ms,tpot_p50_ms,decode_tps,prefetch_requests,prefetch_hits,prefetch_hit_rate,wasted_bytes_mib,ssd_read_bytes_mib
+sync_no_prefetch,820.17,116.51,116.99,8.58,0,0,0.0,0.0,1105.21
+static_layer_prefetch,780.62,116.34,115.98,8.6,6,4,0.6667,6.1,1123.79
+oracle_prefetch,766.2,116.06,117.05,8.62,28,16,0.5714,36.62,1151.65

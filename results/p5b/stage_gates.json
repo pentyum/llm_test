@@ -1,0 +1,20 @@
+{
+  "G0_environment_frozen_and_p5a3_audited": "PASS",
+  "G1_multilayer_parity_and_decode": "PASS",
+  "G2_multiversion_offline_expert_store": "PASS",
+  "G3_strict_cache_capacity_invariants": "PASS",
+  "G4_true_ssd_offload_without_dual_copy": "PASS",
+  "G5_prefetch_manager_and_ablation": "PASS",
+  "G6_multilayer_policy_fair_evaluation": "PASS",
+  "G7_automated_report_and_tests": "PASS",
+  "core_verdicts": {
+    "multilayer_moe_executable": "PASS",
+    "offline_quant_switching": "PASS",
+    "model_relies_on_ssd_store": "PASS",
+    "physical_cold_read_proved": "BUFFERED_CONFIRMED_PHYSICAL_UNVERIFIED",
+    "cache_budget_reliable": "PASS",
+    "prefetch_latency_hiding": "PASS_ON_TTFT",
+    "dynamic_s4_pareto_improvement": "YES",
+    "e2e_tpot_competitive": "YES"
+  }
+}

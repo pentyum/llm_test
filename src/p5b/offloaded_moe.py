@@ -29,8 +29,10 @@ class MultiLayerOffloadedMoE:
         mode: str = "bf16_passthrough",
         policy = None,
         dequant_backend: str = "torch_cuda",
-        release_orig_experts: bool = False
+        release_orig_experts: bool = False,
+        prefetch_manager = None
     ):
+        self.prefetch_manager = prefetch_manager
         self.model = model
         self.target_layers = sorted(list(target_layers))
         self.cache = cache
@@ -60,7 +62,8 @@ class MultiLayerOffloadedMoE:
                 cache=self.cache,
                 mode=self.mode,
                 policy=self.policy,
-                dequant_backend=self.dequant_backend
+                dequant_backend=self.dequant_backend,
+                prefetch_manager=self.prefetch_manager
             )
             self.dyn_layers[l] = dyn
             self.model.model.layers[l].mlp = dyn
