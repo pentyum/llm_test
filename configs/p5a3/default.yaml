@@ -1,0 +1,25 @@
+model_id: "allenai/OLMoE-1B-7B-0125-Instruct"
+model_dir: "models/hf_original"
+expert_store_dir: "artifacts/real_experts"
+sensitivity_csv: "results/p45_real_sensitivity.csv"
+prompt_file: "configs/p5a2/eval_prompts.jsonl"
+output_dir: "results/p5a3"
+seed: 20261104
+target_layer: 0
+
+modes:
+  - "ref_unmodified"
+  - "bf16_passthrough"
+  - "fixed_int8"
+  - "fixed_int4"
+  - "s4_measured_cost"
+
+repeats: 3
+max_new_tokens: 16
+decode_mode: "incremental_kv"
+vram_cache_mib: 64
+ram_cache_mib: 128
+schedule_quality_budget: 0.025
+run_teacher_forced: true
+run_free_generation: true
+dequant_backend: "torch_cuda"

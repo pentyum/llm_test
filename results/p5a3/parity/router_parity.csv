@@ -1,0 +1,2 @@
+test_input,logits_max_abs_diff,weights_max_abs_diff,indices_exact_match,top_k,status
+random_b2_s8,0.0,0.0,True,8,PASS

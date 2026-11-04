@@ -1,0 +1,61 @@
+{
+  "version": "p5a.3",
+  "config_file": "configs/p5a3/default.yaml",
+  "git_sha": "bc1a92ae1cd8cf3ce92c6cfd17bfb4c808167955",
+  "timestamp": 1793800000.0,
+  "num_prompts": 32,
+  "prompt_ids": [
+    "moe_01",
+    "moe_02",
+    "moe_03",
+    "moe_04",
+    "moe_05",
+    "moe_06",
+    "moe_07",
+    "moe_08",
+    "sys_01",
+    "sys_02",
+    "sys_03",
+    "sys_04",
+    "sys_05",
+    "sys_06",
+    "sys_07",
+    "sys_08",
+    "code_01",
+    "code_02",
+    "code_03",
+    "code_04",
+    "code_05",
+    "code_06",
+    "code_07",
+    "code_08",
+    "reason_01",
+    "reason_02",
+    "reason_03",
+    "reason_04",
+    "reason_05",
+    "reason_06",
+    "reason_07",
+    "reason_08"
+  ],
+  "categories": [
+    "systems",
+    "code",
+    "reasoning",
+    "architecture"
+  ],
+  "modes": [
+    "ref_unmodified",
+    "bf16_passthrough",
+    "fixed_int8",
+    "fixed_int4",
+    "s4_measured_cost"
+  ],
+  "repeats": 3,
+  "total_expected_runs": 480,
+  "weights_present": {
+    "bf16": 128,
+    "int8_g128": 128,
+    "int4_g128": 128
+  }
+}

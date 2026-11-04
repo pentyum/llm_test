@@ -1,0 +1,5 @@
+{
+  "divergence_found": false,
+  "first_divergent_stage": "NONE",
+  "description": "All stages match within strict floating point tolerances"
+}
