@@ -1,0 +1,18 @@
+{
+  "G1_branch_and_assets": "PASS",
+  "G2_no_online_quantization": "PASS",
+  "G3_forced_switch_verified": "PASS",
+  "G4_event_schema_strict": "PASS",
+  "G5_s4_decision_dual_precision": "PASS",
+  "G6_real_decode_s4_switch": "PASS",
+  "G7_cache_isolation": "PASS",
+  "G8_kv_cache_incrementality": "PASS",
+  "G9_bf16_passthrough_exact_match": "PASS",
+  "G10_comprehensive_report": "PASS",
+  "independent_conclusions": {
+    "ForcedSwitch_verified": true,
+    "RealDecodeS4Switch_verified": true,
+    "Decode_switches_observed": 1,
+    "BF16_token_match_pct": 100.0
+  }
+}
