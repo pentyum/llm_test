@@ -70,6 +70,9 @@ def test_fixed_int8_and_int4_modes(setup_layer0):
 def test_dynamic_switching_records_events(setup_layer0):
     """F3 & Step 3: Dynamic mode executes and records online precision switch events."""
     orig_moe, dyn_layer = setup_layer0
+    from src.p5a.precision_policies import S4QualityBudgetPolicy
+    policy = S4QualityBudgetPolicy({}, max_loss_budget=0.020)
+    dyn_layer.set_policy(policy)
     dyn_layer.set_mode("dynamic_s4")
     dyn_layer.clear_events()
 
@@ -79,5 +82,5 @@ def test_dynamic_switching_records_events(setup_layer0):
 
     events = dyn_layer.switch_events
     assert len(events) == 8 * 8  # 8 tokens x 8 experts/token
-    assert any(e["requested_precision"] == "int4_g128" for e in events)
-    assert any(e["requested_precision"] == "int8_g128" for e in events)
+    assert any(getattr(e, "requested_precision", None) == "int4_g128" for e in events)
+    assert any(getattr(e, "requested_precision", None) == "int8_g128" for e in events)
