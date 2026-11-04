@@ -4,11 +4,10 @@ Includes:
   - ForcedSequencePolicy: Test-only deterministic sequence injector for G3 verification
   - FixedPrecisionPolicy: Static precision baseline
   - S4LegacyPolicy: Unconstrained joint cost optimization (diagnosed in D.1)
-  - S4QualityBudgetPolicy: Constrained quality budget optimization (Phase D)
+  - S4QualityBudgetPolicy: Constrained quality budget optimization (Phase D, G5/G6)
 """
 
-from typing import Dict, Tuple, List, Optional
-import pandas as pd
+from typing import Dict, Tuple, List, Optional, Any
 from src.tiered_cache import TieredCache
 
 class ForcedSequencePolicy:
@@ -42,6 +41,7 @@ class S4LegacyPolicy:
     """
     Original unconstrained cost optimization formula from P4:
     Cost = lambda_quality * (score * error) + lambda_latency * load_cost
+    Diagnosed: When load_cost difference is large, it easily degenerates to 100% INT4.
     """
     def __init__(self, sensitivity_lookup: Dict[Tuple[int, int], Dict[str, float]], lambda_q: float = 12.0, lambda_l: float = 1.0):
         self.sensitivity_lookup = sensitivity_lookup
@@ -76,3 +76,89 @@ class S4LegacyPolicy:
                 min_cost = cost
                 best_p = cand
         return best_p
+
+class S4QualityBudgetPolicy:
+    """
+    Constrained Quality Optimization Policy (Phase D):
+    1. Filter out candidate precisions where estimated_loss = router_score * expert_error > max_loss_budget.
+    2. Among valid candidates satisfying the quality budget, choose the lowest latency / memory cost.
+    3. If INT4 satisfies budget (e.g. low router weight or robust expert), use INT4 for memory efficiency.
+    4. If INT4 exceeds budget, upgrade to INT8 (or BF16) to protect high-impact tokens.
+    """
+    def __init__(
+        self,
+        sensitivity_lookup: Dict[Tuple[int, int], Dict[str, float]],
+        max_loss_budget: float = 0.020,  # e.g. 0.020 allows low-weight experts to use INT4, forces high-weight to INT8
+        layer_defaults: Optional[Dict[str, float]] = None
+    ):
+        self.sensitivity_lookup = sensitivity_lookup
+        self.max_loss_budget = max_loss_budget
+        self.layer_defaults = layer_defaults or {
+            "bf16": 0.0,
+            "int8_g128": 0.012,
+            "int4_g128": 0.180
+        }
+
+    def get_error(self, layer_id: int, expert_id: int, prec: str) -> float:
+        k = (layer_id, expert_id)
+        if k in self.sensitivity_lookup:
+            return self.sensitivity_lookup[k].get(prec, 0.20)
+        return self.layer_defaults.get(prec, 0.20)
+
+    def select_with_debug(
+        self,
+        layer_id: int,
+        expert_id: int,
+        router_score: float,
+        cache: Optional[TieredCache] = None
+    ) -> Tuple[str, Dict[str, Any]]:
+        candidates = ["int4_g128", "int8_g128", "bf16"]
+        valid_candidates = []
+        losses = {}
+        costs = {}
+
+        for cand in candidates:
+            err = self.get_error(layer_id, expert_id, cand)
+            est_loss = router_score * err
+            losses[cand] = est_loss
+
+            # Practical load latency estimate in milliseconds
+            load_cost = 0.0
+            if cache is not None:
+                k = cache._make_key(layer_id, expert_id, cand)
+                if k in cache.vram_cache:
+                    load_cost = 0.005 # VRAM hit
+                elif k in cache.ram_cache:
+                    load_cost = 0.26 if cand.startswith("int4") else (0.50 if cand.startswith("int8") else 0.96)
+                else:
+                    load_cost = 0.85 if cand.startswith("int4") else (1.50 if cand.startswith("int8") else 2.50)
+            else:
+                load_cost = 0.5 if cand.startswith("int4") else (1.0 if cand.startswith("int8") else 2.0)
+
+            costs[cand] = load_cost
+            if est_loss <= self.max_loss_budget or cand == "bf16":
+                valid_candidates.append(cand)
+
+        if not valid_candidates:
+            valid_candidates = ["bf16"]
+
+        # Among candidates satisfying quality budget, pick the one with minimal load cost
+        best_cand = min(valid_candidates, key=lambda c: costs[c])
+        debug_info = {
+            "router_score": router_score,
+            "losses": losses,
+            "costs": costs,
+            "valid_candidates": valid_candidates,
+            "selected_precision": best_cand
+        }
+        return best_cand, debug_info
+
+    def select(
+        self,
+        layer_id: int,
+        expert_id: int,
+        router_score: float,
+        cache: Optional[TieredCache] = None
+    ) -> str:
+        chosen, _ = self.select_with_debug(layer_id, expert_id, router_score, cache)
+        return chosen
