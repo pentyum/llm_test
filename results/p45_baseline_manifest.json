@@ -1,0 +1,34 @@
+{
+  "p1_baseline.csv": {
+    "size_bytes": 7559,
+    "sha256": "b3c6ac04aa7e934d8c12cdc3cd7f43931c3e72d299b891d8cd0fdafab396e6bb"
+  },
+  "p1_baseline.png": {
+    "size_bytes": 151631,
+    "sha256": "a09a5af91a399595d331ac880c682e05dea14ffed811c2cfeb4c0022840a967c"
+  },
+  "p2_ablation.csv": {
+    "size_bytes": 2684,
+    "sha256": "34da63156f63465f95ec4e644602ab3e6a83d1c9df992e4dc1b53135fd34e24b"
+  },
+  "p2_ablation.png": {
+    "size_bytes": 127255,
+    "sha256": "85920379c468297520ffd0d33c734cbbdd65df858649473ca94c81ef725ec6a5"
+  },
+  "p3_quant_error.csv": {
+    "size_bytes": 1185,
+    "sha256": "736d80d61b01ade1bc27cde4fa74ae92ee5940efbee8f3b8e88aefa72e0a471c"
+  },
+  "p3_quant_error.png": {
+    "size_bytes": 160853,
+    "sha256": "e5eabc45275f6b035904f857b10d3cafa1602c8f03b57dd3c9f2ec30f245112a"
+  },
+  "p4_policy_comparison.csv": {
+    "size_bytes": 1151,
+    "sha256": "832ed513ca72d38269827585f52df860360b4bc28f32dc5ac4094f7f88c93edf"
+  },
+  "p4_pareto.png": {
+    "size_bytes": 221318,
+    "sha256": "c23c0410812c4b9079cc737814b1e6ce43408f071fc621bc52cf425826f988c7"
+  }
+}

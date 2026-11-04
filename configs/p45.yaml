@@ -1,0 +1,11 @@
+seed: 42
+repeats: 5
+warmup_accesses: 100
+measured_accesses: 2400
+model_id: "allenai/OLMoE-1B-7B-0125-Instruct"
+precision_formats: ["bf16", "int8_g128", "int4_g128"]
+ram_cache_mib: 128
+vram_cache_budgets_mib: [24, 48, 96]
+strategies: ["S0_fixed_int4", "S1_fixed_int8", "S2_router_only", "S3_sensitivity_aware", "S4_cache_aware"]
+trace_file: "/home/yaoyao/llm_test/artifacts/traces/trace_real_router.jsonl"
+sensitivity_file: "/home/yaoyao/llm_test/results/p45_real_sensitivity.csv"
