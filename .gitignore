@@ -1,0 +1,8 @@
+models/
+artifacts/
+logs/
+*.gguf
+*.safetensors
+__pycache__/
+*.bin
+*.pth

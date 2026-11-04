@@ -1,0 +1,42 @@
+experiment:
+  name: "moe-precision-lab"
+  seed: 42
+
+hardware:
+  gpu_name: "NVIDIA GeForce RTX 4060 Laptop GPU"
+  vram_mib: 8188
+  ram_gib: 46
+  ssd_path: "/home/yaoyao/llm_test"
+
+model:
+  repo_id: "allenai/OLMoE-1B-7B-0125-Instruct"
+  gguf_repo_id: "allenai/OLMoE-1B-7B-0125-Instruct-GGUF"
+  num_layers: 16
+  num_experts: 64
+  top_k: 8
+  hidden_size: 2048
+  intermediate_size: 1024
+  norm_topk_prob: false
+
+cache:
+  vram_budget_mib: 512
+  ram_budget_mib: 2048
+  test_vram_budgets_mib: [256, 512, 1024]
+  test_ram_budgets_mib: [512, 2048, 8192]
+
+quantization:
+  group_size: 128
+  formats: ["bf16", "int8_g128", "int4_g128"]
+
+baseline_cli:
+  context_size: 1024
+  max_tokens: 128
+  temperature: 0.0
+  seed: 42
+  prompts:
+    - id: "prompt_short"
+      text: "Explain how mixture-of-experts language models route tokens."
+    - id: "prompt_medium"
+      text: "Discuss the trade-offs between static integer quantization and dynamic precision caching in large language models."
+    - id: "prompt_code"
+      text: "Write a high-performance Python class implementing an LRU cache with tiered memory eviction."
