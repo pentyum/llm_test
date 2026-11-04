@@ -1,6 +1,8 @@
 models/
 artifacts/
 logs/
+llama.cpp/
+.pytest_cache/
 *.gguf
 *.safetensors
 __pycache__/
